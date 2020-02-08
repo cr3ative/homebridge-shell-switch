@@ -5,7 +5,11 @@ Shows pending state while command is being run.
 
 ### But why?
 
-Let's say you want to run a bash script on your homebridge host system, but it isn't guaranteed to work. This switch won't change state until the script returns a successful exit code (zero). If anything else happens, the switch will remain in its previous state.
+Suppose you to run a bash script on your homebridge host system, but it isn't guaranteed to work. You want to retry that command in a little while until it works.
+
+- This switch won't change state until the script returns a successful exit code (zero). 
+- If anything else happens, the switch will remain in its previous state.
+- We'll show the "pending" switch state while the command is running.
 
 The switch will maintain state between homebridge reboots, using `node-persist`.
 
