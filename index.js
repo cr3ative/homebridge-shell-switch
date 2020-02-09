@@ -37,7 +37,8 @@ class ShellSwitch {
 
   createSwitchService() {
     this.switchService = new Service.Switch(this.name);
-    this.switchService.getCharacteristic(Characteristic.On)
+    this.switchService
+      .getCharacteristic(Characteristic.On)
       .on('get', this.getSwitchState.bind(this))
       .on('set', this.setSwitchState.bind(this));
 
@@ -74,11 +75,15 @@ class ShellSwitch {
     this.storage.setItemSync(this.name, on);
 
     let cmd = this.offCmd;
-    if (on) { cmd = this.onCmd; }
+    if (on) {
+      cmd = this.onCmd;
+    }
 
     this.log(`Executing command: '${cmd}'`);
     return exec(cmd, { timeout: this.timeout }, (error) => {
-      if (error) { this.log(error); }
+      if (error) {
+        this.log(error);
+      }
       callback(error);
     });
   }
