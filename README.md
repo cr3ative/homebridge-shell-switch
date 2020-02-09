@@ -15,10 +15,6 @@ The switch will maintain state between homebridge reboots, using `node-persist`.
 
 Many thanks to [hans-1](https://github.com/hans-1/homebridge-cmdtriggerswitch) for providing a lovely base for this plugin to grow on.
 
-### Does it work yet?
-
-No.
-
 ## Installation
 
 Example config.json:
