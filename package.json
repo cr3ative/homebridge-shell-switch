@@ -1,6 +1,6 @@
 {
   "name": "homebridge-shell-switch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Switch which changes state only if the shell command is successful.",
   "main": "index.js",
   "scripts": {
@@ -22,16 +22,16 @@
   "author": "Paul Curry",
   "license": "MIT",
   "dependencies": {
-    "node-persist": "^3.0.5"
+    "node-persist": "^2.1.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cr3ative/homebridge-apcaccess.git"
+    "url": "git+https://github.com/cr3ative/homebridge-shell-switch.git"
   },
   "bugs": {
-    "url": "https://github.com/cr3ative/homebridge-apcaccess/issues"
+    "url": "https://github.com/cr3ative/homebridge-shell-switch/issues"
   },
-  "homepage": "https://github.com/cr3ative/homebridge-apcaccess#readme",
+  "homepage": "https://github.com/cr3ative/homebridge-shell-switch#readme",
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",

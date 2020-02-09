@@ -14,7 +14,6 @@ module.exports = {
   },
   rules: {
     'no-console': 0,
-    'no-nested-ternary': 0,
-    'no-bitwise': 0,
+    'global-require': 0,
   },
 };

@@ -2,7 +2,6 @@ let Service;
 let Characteristic;
 let HomebridgeAPI;
 const { exec } = require('child_process');
-const { storage } = require('node-persist');
 
 class ShellSwitch {
   constructor(log, config) {
@@ -13,7 +12,8 @@ class ShellSwitch {
 
     // Persistent Storage
     this.cacheDirectory = HomebridgeAPI.user.persistPath();
-    storage.initSync({ dir: this.cacheDirectory, forgiveParseErrors: true });
+    this.storage = require('node-persist');
+    this.storage.initSync({ dir: this.cacheDirectory, forgiveParseErrors: true });
 
     // Setup Services
     this.createSwitchService();
@@ -24,17 +24,25 @@ class ShellSwitch {
     this.name = config.name;
     this.onCmd = config.onCmd;
     this.offCmd = config.offCmd;
+    this.timeout = config.timeout || 30;
+  }
+
+  getCachedState() {
+    const cachedState = this.storage.getItemSync(this.name);
+    if (cachedState === undefined || cachedState === false) {
+      return false;
+    }
+    return true;
   }
 
   createSwitchService() {
     this.switchService = new Service.Switch(this.name);
+    this.switchService.getCharacteristic(Characteristic.On)
+      .on('get', this.getSwitchState.bind(this))
+      .on('set', this.setSwitchState.bind(this));
 
-    this.switchService.getCharacteristic(Characteristic.On).on('set', this.toggleSwitch.bind(this));
-
-    const cachedState = storage.getItemSync(this.name);
-    if (cachedState === undefined || cachedState === false) {
-      this.switchService.setCharacteristic(Characteristic.On, false);
-    } else {
+    if (this.getCachedState.bind(this)) {
+      this.restoringStateOnBoot = true;
       this.switchService.setCharacteristic(Characteristic.On, true);
     }
   }
@@ -50,21 +58,29 @@ class ShellSwitch {
     return [this.accessoryInformationService, this.switchService];
   }
 
-  toggleSwitch(on, callback) {
-    this.log(`Setting switch to ${on}`);
-    storage.setItemSync(this.name, on);
+  getSwitchState(callback) {
+    callback(this.getCachedState.bind(this));
+  }
 
-    if (on) {
-      if (this.onCmd !== undefined) {
-        this.log(`Executing ON command: '${this.onCmd}'`);
-        exec(this.onCmd);
-      }
-    } else if (this.offCmd !== undefined) {
-      this.log(`Executing OFF command: '${this.offCmd}'`);
-      exec(this.offCmd);
+  setSwitchState(on, callback) {
+    // Don't actually toggle the switch state if we're just ensuring the
+    // existing state is being restored on boot.
+    if (this.restoringStateOnBoot) {
+      this.restoringStateOnBoot = false;
+      return callback();
     }
 
-    callback();
+    this.log(`Setting switch to ${on}`);
+    this.storage.setItemSync(this.name, on);
+
+    let cmd = this.offCmd;
+    if (on) { cmd = this.onCmd; }
+
+    this.log(`Executing command: '${cmd}'`);
+    return exec(cmd, { timeout: this.timeout }, (error) => {
+      if (error) { this.log(error); }
+      callback(error);
+    });
   }
 }
 
