@@ -1,6 +1,6 @@
 {
   "name": "homebridge-shell-switch",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Switch which changes state only if the shell command is successful.",
   "main": "index.js",
   "scripts": {
