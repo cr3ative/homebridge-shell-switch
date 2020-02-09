@@ -43,7 +43,8 @@ class ShellSwitch {
       .on('set', this.setSwitchState.bind(this));
 
     this.restoringStateOnBoot = true;
-    this.switchService.setCharacteristic(Characteristic.On, this.getCachedState());
+    const state = this.getCachedState();
+    this.switchService.setCharacteristic(Characteristic.On, state);
   }
 
   createAccessoryInformationService() {
@@ -58,7 +59,9 @@ class ShellSwitch {
   }
 
   getSwitchState(callback) {
-    callback(this.getCachedState());
+    const state = this.getCachedState();
+    console.log('state = ', state);
+    callback(null, state);
   }
 
   setSwitchState(on, callback) {
@@ -69,9 +72,6 @@ class ShellSwitch {
       return callback();
     }
 
-    this.log(`Setting switch to ${on}`);
-    this.storage.setItemSync(this.name, on);
-
     let cmd = this.offCmd;
     if (on) {
       cmd = this.onCmd;
@@ -81,6 +81,9 @@ class ShellSwitch {
     return exec(cmd, { timeout: this.timeout }, (error) => {
       if (error) {
         this.log(error);
+      } else {
+        this.log(`Setting switch to ${on}`);
+        this.storage.setItemSync(this.name, on);
       }
       callback(error);
     });

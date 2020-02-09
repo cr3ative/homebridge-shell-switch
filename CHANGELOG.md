@@ -2,9 +2,9 @@
 
 All notable changes to this project are documented in this file. This project uses [Semantic Versioning](https://semver.org/).
 
-## 0.0.3 [9 Feb 2020]
+## 0.0.[3-6] [9 Feb 2020]
 
-- Always report on boot.
+- Bugfixes
 
 ## 0.0.2 [9 Feb 2020]
 
