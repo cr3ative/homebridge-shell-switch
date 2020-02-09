@@ -24,7 +24,6 @@ class ShellSwitch {
     this.name = config.name;
     this.onCmd = config.onCmd;
     this.offCmd = config.offCmd;
-    this.timeout = config.timeout || 30;
   }
 
   getCachedState() {
@@ -60,7 +59,6 @@ class ShellSwitch {
 
   getSwitchState(callback) {
     const state = this.getCachedState();
-    console.log('state = ', state);
     callback(null, state);
   }
 
@@ -78,7 +76,7 @@ class ShellSwitch {
     }
 
     this.log(`Executing command: '${cmd}'`);
-    return exec(cmd, { timeout: this.timeout }, (error) => {
+    return exec(cmd, (error) => {
       if (error) {
         this.log(error);
       } else {

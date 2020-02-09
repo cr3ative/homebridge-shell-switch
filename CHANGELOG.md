@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented in this file. This project uses [Semantic Versioning](https://semver.org/).
 
+## 0.0.7 [9 Feb 2020]
+
+- Remove timeout parameter
+
 ## 0.0.[3-6] [9 Feb 2020]
 
 - Bugfixes
