@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented in this file. This project uses [Semantic Versioning](https://semver.org/).
 
+## 0.0.3 [9 Feb 2020]
+
+- Always report on boot.
+
 ## 0.0.2 [9 Feb 2020]
 
 - Now supports pending status (callback after command) and the intended exit code monitoring.

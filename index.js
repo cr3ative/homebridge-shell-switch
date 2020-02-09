@@ -42,10 +42,8 @@ class ShellSwitch {
       .on('get', this.getSwitchState.bind(this))
       .on('set', this.setSwitchState.bind(this));
 
-    if (this.getCachedState.bind(this)) {
-      this.restoringStateOnBoot = true;
-      this.switchService.setCharacteristic(Characteristic.On, true);
-    }
+    this.restoringStateOnBoot = true;
+    this.switchService.setCharacteristic(Characteristic.On, this.getCachedState.bind(this));
   }
 
   createAccessoryInformationService() {
