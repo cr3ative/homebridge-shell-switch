@@ -58,7 +58,7 @@ class ShellSwitch {
   }
 
   getSwitchState(callback) {
-    callback(this.getCachedState.bind(this));
+    callback(this.getCachedState());
   }
 
   setSwitchState(on, callback) {
