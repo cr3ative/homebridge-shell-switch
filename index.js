@@ -24,11 +24,12 @@ class ShellSwitch {
     this.name = config.name;
     this.onCmd = config.onCmd;
     this.offCmd = config.offCmd;
+    this.stateful = config.stateful ? config.stateful : true;
   }
 
   getCachedState() {
     const cachedState = this.storage.getItemSync(this.name);
-    if (cachedState === undefined || cachedState === false) {
+    if ((cachedState === undefined || cachedState === false)&&!this.stateless) {
       return false;
     }
     return true;
@@ -80,8 +81,14 @@ class ShellSwitch {
       if (error) {
         this.log(error);
       } else {
-        this.log(`Setting switch to ${on}`);
-        this.storage.setItemSync(this.name, on);
+        if (this.stateful) {
+          this.log(`Setting switch to ${on}`);
+          this.storage.setItemSync(this.name, on);
+        }
+        else {
+          this.log(`Stateless switch set to ${on}`);
+          this.storage.setItemSync(this.name, on);
+        }
       }
       callback(error);
     });
